@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Physical Training — Fall 2026</title>
+<style>
+  :root {
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --accent-mid: #bfdbfe;
+    --bg: #f8faff;
+    --ink: #0f172a;
+    --sub: #64748b;
+    --line: #e2e8f0;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    padding-bottom: 60px;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%);
+    padding: 26px 18px 22px; box-shadow: 0 4px 24px rgba(29,78,216,0.3);
+  }
+  .hero-inner { max-width: 640px; margin: 0 auto; }
+  .eyebrow { font-size: 9px; letter-spacing: 0.3em; color: rgba(255,255,255,0.45); margin-bottom: 6px; text-transform: uppercase; }
+  h1 { font-size: 21px; font-weight: 800; margin: 0; color: #fff; letter-spacing: -0.02em; }
+  .tagline { font-size: 11px; color: rgba(255,255,255,0.6); margin-top: 5px; margin-bottom: 12px; }
+  .tags { display: flex; gap: 7px; flex-wrap: wrap; }
+  .tag { font-size: 10px; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 14px; }
+
+  .weektabs { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; margin-top: 14px; }
+  .weektab {
+    background: #fff; border: 1.5px solid var(--line); border-radius: 10px;
+    padding: 10px 4px; text-align: center; cursor: pointer; font-family: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .weektab.active { background: #1d4ed8; border-color: #1d4ed8; box-shadow: 0 4px 14px rgba(29,78,216,0.25); }
+  .weektab .wl { font-size: 10px; font-weight: 800; color: #64748b; }
+  .weektab.active .wl { color: #fff; }
+  .weektab .ws { font-size: 8px; color: #94a3b8; margin-top: 2px; }
+  .weektab.active .ws { color: rgba(255,255,255,0.65); }
+
+  .weeknote {
+    margin: 10px 0; padding: 9px 14px; background: var(--accent-light);
+    border-left: 3px solid #3b82f6; border-radius: 0 8px 8px 0;
+    font-size: 11px; color: #1d4ed8; font-weight: 600;
+  }
+
+  .day { margin-bottom: 8px; }
+  .daybtn {
+    width: 100%; background: #fff; border: 1.5px solid var(--line);
+    border-radius: 12px; padding: 13px 15px; cursor: pointer; text-align: left;
+    display: flex; align-items: center; gap: 12px; font-family: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .daybtn.open { border-radius: 12px 12px 0 0; }
+  .daymain { flex: 1; }
+  .daytop { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .dayname { font-size: 13px; font-weight: 800; letter-spacing: 0.04em; }
+  .daybadge { font-size: 9px; padding: 2px 7px; border-radius: 20px; font-weight: 700; }
+  .daynote { font-size: 11px; color: var(--sub); line-height: 1.4; }
+  .daychev { color: #cbd5e1; font-size: 13px; }
+
+  .daybody {
+    background: #f8faff; border: 1.5px solid var(--line); border-top: none;
+    border-radius: 0 0 12px 12px; padding: 12px;
+  }
+
+  .sess { margin-bottom: 8px; }
+  .sessbtn {
+    width: 100%; background: #fff; border: 1.5px solid var(--line);
+    border-radius: 8px; padding: 10px 13px; cursor: pointer; text-align: left;
+    display: flex; justify-content: space-between; align-items: center; font-family: inherit;
+  }
+  .sessbtn.open { border-radius: 8px 8px 0 0; }
+  .sesstitle { font-size: 12px; font-weight: 700; color: #334155; }
+  .sesschev { color: #cbd5e1; font-size: 11px; }
+  .sessbody {
+    background: #fff; border: 1.5px solid var(--line); border-top: none;
+    border-radius: 0 0 8px 8px; padding: 4px 13px;
+  }
+  .exrow {
+    display: flex; justify-content: space-between; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px;
+  }
+  .exrow:last-child { border-bottom: none; }
+  .exname { color: #334155; }
+  .exset { color: var(--sub); font-weight: 600; white-space: nowrap; }
+  .exnote { font-size: 11px; color: #94a3b8; padding: 2px 0 8px; }
+
+  .footer {
+    margin-top: 20px; padding: 14px 16px; background: var(--accent-light);
+    border: 1.5px solid var(--accent-mid); border-radius: 12px; font-size: 11px;
+    color: #1d4ed8; text-align: center; line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">4-Week Rotation · Physical Training</div>
+    <h1>⚡ FALL 2026 BODY SYSTEM</h1>
+    <div class="tagline">Back · Shoulders · Arms · Ankles/Knees · Soccer · Track</div>
+    <div class="tags">
+      <span class="tag">🏋️ Tue·Wed·Thu·Fri</span>
+      <span class="tag">🦵 Leg Health: Fri+Sat</span>
+      <span class="tag">⚽ Mon+Fri+Sat</span>
+      <span class="tag">🏃 Sat</span>
+      <span class="tag">🧘 Mobility Mon</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="weektabs" id="weektabs"></div>
+  <div class="weeknote" id="weeknote"></div>
+  <div id="days"></div>
+
+  <div class="footer">
+    <strong>Back 2x · Shoulders 2x · Arms 2x weekly — growth optimised</strong><br>
+    🦵 Leg health never skipped, even in deload &nbsp;|&nbsp; 🧘 Ankle/knee work protects your soccer career<br>
+    <span style="color:#3b82f6;">Repeat this 4-week cycle all semester 🔁</span>
+  </div>
+
+</div>
+
+<script>
+const EX = (name, set, note) => ({ name, set, note: note || null });
+
+const weeks = [
+  { label: "WEEK 1", sub: "Foundation", note: "Baseline intensity — every exercise learned clean before adding load" },
+  { label: "WEEK 2", sub: "Build", note: "Intensity bump — add load/volume where noted" },
+  { label: "WEEK 3", sub: "Deload", note: "Sets cut ~30% across gym + track. Leg health & mobility stay full — these protect your ankles/knees, never cut" },
+  { label: "WEEK 4", sub: "Refinement", note: "Back to normal intensity, slight exercise variation to avoid staleness" },
+];
+
+// index 0-3 = W1-W4
+const schedule = [
+  // ============ MONDAY ============
+  {
+    day: "MONDAY", type: "soccer",
+    tags: ["🧘 Mobility", "⚽ Personal Soccer #1"],
+    note: [
+      "Light day — mobility + technical soccer, apply Sunday's analysis here",
+      "Same as W1, faster tempo on moves",
+      "Deload: shortened 45–60 min, technical only, no speed emphasis",
+      "Full session, rotate in finishing practice if space allows",
+    ],
+    sessions: (w) => [
+      {
+        title: "🧘 Mobility / Stretch (20–30 min)",
+        detail: [
+          EX("Hip flexor stretch", "2x45s each"),
+          EX("Hamstring stretch", "2x45s each"),
+          EX("Thoracic spine rotations", "2x10 each side", "posture — opens up the upper back"),
+          EX("Doorway chest stretch", "2x30s", "counters hunched posture"),
+          EX("Ankle circles", "1x20 each direction"),
+          EX("Calf + Achilles stretch", "2x30s each"),
+        ]
+      },
+      {
+        title: "⚽ Personal Soccer #1 — Technical",
+        detail: w === 2 ? [
+          EX("Ball mastery + touches", "20 min", "shortened deload session"),
+          EX("Skill moves — perfect what you know", "15 min"),
+          EX("Light turns / directional touches", "10 min"),
+        ] : [
+          EX("Ball mastery drills", "15 min"),
+          EX("Cone dribbling", "15 min"),
+          EX("Skill moves practice", "20–25 min", w === 1 ? "faster tempo than last week" : "pick 1–2 new moves"),
+          EX("Turns + directional touches", "15 min"),
+          w === 3 ? EX("Finishing practice (if space)", "10–15 min") : null,
+        ].filter(Boolean)
+      }
+    ]
+  },
+
+  // ============ TUESDAY ============
+  {
+    day: "TUESDAY", type: "gym-back",
+    tags: ["🏋️ Gym — Back Width & Thickness", "🧘 Abs"],
+    note: ["Back growth day — this is your #1 stated goal, hit directly here"],
+    sessions: (w) => {
+      const rows = [
+        [ // W1
+          EX("Wide-Grip Pull-Ups", "4 sets to failure", "width — lats"),
+          EX("Barbell Rows (overhand)", "4x8", "2s pause at chest — thickness"),
+          EX("Lat Pulldowns (wide grip)", "4x10", "squeeze at bottom"),
+          EX("Single-Arm DB Row", "3x10/side", "full stretch at top"),
+          EX("Face Pulls", "3x15", "posture + rear delts"),
+          EX("Rear Delt Flys", "3x15", "posture"),
+        ],
+        [ // W2
+          EX("Weighted Pull-Ups", "4 sets", "add load"),
+          EX("Pendlay Rows", "4x6–8", "explosive — thickness"),
+          EX("Lat Pulldowns (wide)", "4x10", "drive elbows to hips"),
+          EX("Single-Arm Cable Row", "3x10/side"),
+          EX("Face Pulls", "3x15"),
+          EX("Rear Delt Flys", "3x15"),
+        ],
+        [ // W3 deload
+          EX("Wide-Grip Pull-Ups", "3 sets to failure"),
+          EX("Barbell Rows", "3x8"),
+          EX("Lat Pulldowns (wide)", "3x10"),
+          EX("Single-Arm DB Row", "2x10/side"),
+          EX("Face Pulls", "2x15"),
+          EX("Rear Delt Flys", "2x15"),
+        ],
+        [ // W4
+          EX("Pull-Ups (neutral grip)", "4 sets", "variation"),
+          EX("Chest-Supported DB Row", "4x10"),
+          EX("Lat Pulldowns (wide)", "4x10", "slow eccentric"),
+          EX("Single-Arm DB Row", "3x10/side", "pause at top"),
+          EX("Face Pulls", "3x15"),
+          EX("Rear Delt Flys", "3x15"),
+        ],
+      ];
+      const abs = [
+        [EX("Hollow Hold","3x30s"),EX("Hanging Leg Raises","3x10"),EX("Side Planks","2x30s each")],
+        [EX("Hollow Hold","3x30s"),EX("Hanging Leg Raises","3x10"),EX("Side Planks","2x35s each")],
+        [EX("Hollow Hold","2x30s"),EX("Hanging Leg Raises","2x10"),EX("Side Planks","2x30s each")],
+        [EX("Hollow Hold","3x30s"),EX("Hanging Leg Raises","3x10"),EX("Side Planks","2x30s each")],
+      ];
+      return [
+        { title: "🏋️ Back — Width & Thickness (60–70 min)", detail: rows[w] },
+        { title: "🧘 Abs (10 min)", detail: abs[w] },
+      ];
+    }
+  },
+
+  // ============ WEDNESDAY ============
+  {
+    day: "WEDNESDAY", type: "gym-shoulders",
+    tags: ["🏋️ Gym — Shoulders & Chest"],
+    note: ["Shoulder width day — lateral raises are the priority movement here"],
+    sessions: (w) => {
+      const rows = [
+        [
+          EX("DB Shoulder Press", "4x10"),
+          EX("Lateral Raises", "4x15", "2s hold at top — width priority"),
+          EX("Incline DB Press", "3x10", "upper chest"),
+          EX("Bench Press", "3x8"),
+          EX("Cable Flys", "3x15"),
+          EX("Dips", "3x12"),
+        ],
+        [
+          EX("DB Shoulder Press", "4x10", "heavier"),
+          EX("Lateral Raises", "4x15", "2s hold"),
+          EX("Incline DB Press", "4x10"),
+          EX("Bench Press", "3x8", "add weight"),
+          EX("Cable Flys", "3x15"),
+          EX("Dips", "3x12"),
+        ],
+        [
+          EX("DB Shoulder Press", "3x10"),
+          EX("Lateral Raises", "3x15"),
+          EX("Incline DB Press", "2x10"),
+          EX("Bench Press", "2x8"),
+          EX("Cable Flys", "2x15"),
+          EX("Dips", "2x12"),
+        ],
+        [
+          EX("DB Shoulder Press", "4x10", "3s eccentric tempo"),
+          EX("Lateral Raises", "4x15", "2s hold"),
+          EX("Incline DB Press", "3x10"),
+          EX("Bench Press", "3x8"),
+          EX("Cable Flys", "3x15"),
+          EX("Dips", "3x12"),
+        ],
+      ];
+      return [{ title: "🏋️ Shoulders & Chest (55–65 min)", detail: rows[w] }];
+    }
+  },
+
+  // ============ THURSDAY ============
+  {
+    day: "THURSDAY", type: "gym-arms",
+    tags: ["🏋️ Gym — Arms (Triceps Priority)", "🧘 Abs"],
+    note: ["Triceps get the heaviest movement of the week here — your stated priority"],
+    sessions: (w) => {
+      const rows = [
+        [
+          EX("Close-Grip Bench Press", "3x10", "triceps priority"),
+          EX("Overhead Tricep Extension", "3x12", "long head — visible size"),
+          EX("Cable Pushdowns (rope)", "3x15"),
+          EX("Incline DB Curl", "3x12", "slow eccentric"),
+          EX("Hammer Curls", "3x12", "thickness"),
+        ],
+        [
+          EX("Close-Grip Bench Press", "3x10", "add weight"),
+          EX("Overhead Tricep Extension", "3x12"),
+          EX("Cable Pushdowns", "3x15"),
+          EX("Incline DB Curl", "3x12"),
+          EX("Hammer Curls", "3x12"),
+        ],
+        [
+          EX("Skull Crushers", "2x10", "variation, lighter"),
+          EX("Overhead Tricep Extension", "2x12"),
+          EX("Cable Pushdowns", "2x15"),
+          EX("Incline DB Curl", "2x12"),
+          EX("Hammer Curls", "2x12"),
+        ],
+        [
+          EX("Skull Crushers", "3x10", "variation"),
+          EX("Overhead Tricep Extension", "3x12"),
+          EX("Cable Pushdowns", "3x15"),
+          EX("Incline DB Curl", "3x12"),
+          EX("Hammer Curls", "3x12"),
+        ],
+      ];
+      const abs = [
+        [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x45s")],
+        [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x50s")],
+        [EX("Dead Bugs","2x12"),EX("Reverse Crunches","2x15"),EX("Plank","2x40s")],
+        [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x45s")],
+      ];
+      return [
+        { title: "🏋️ Arms — Triceps Priority (55–65 min)", detail: rows[w] },
+        { title: "🧘 Abs (10 min)", detail: abs[w] },
+      ];
+    }
+  },
+
+  // ============ FRIDAY ============
+  {
+    day: "FRIDAY", type: "gym-finisher",
+    tags: ["🏋️ Arms Finisher + Back Pump", "🦵 Leg Health #1", "⚽ Game 7–11pm"],
+    note: ["Light day before your night game — back pump added for true 2x/week back frequency"],
+    sessions: (w) => {
+      const finisher = [
+        [EX("EZ-Bar Curl","3x10","2s pause"),EX("Cross-Body Hammer Curl","3x12"),EX("Cable Pushdowns","3x15"),EX("Lateral Raises","3x15","shoulders 2nd hit")],
+        [EX("EZ-Bar Curl","3x10","2s pause"),EX("Cross-Body Hammer Curl","3x12"),EX("Cable Pushdowns","3x15"),EX("Lateral Raises","3x15")],
+        [EX("EZ-Bar Curl","2x10"),EX("Cross-Body Hammer Curl","2x12"),EX("Cable Pushdowns","2x15"),EX("Lateral Raises","2x15")],
+        [EX("EZ-Bar Curl","3x10","2s pause"),EX("Cross-Body Hammer Curl","3x12"),EX("Cable Pushdowns","3x15"),EX("Lateral Raises","3x15")],
+      ];
+      const backpump = w === 2
+        ? [EX("Straight-Arm Lat Pushdowns","2x15"),EX("Seated Cable Row (light, high rep)","2x15")]
+        : [EX("Straight-Arm Lat Pushdowns","3x15","lat activation, low joint stress"),EX("Seated Cable Row (light, high rep)","3x15")];
+      const leg1 = [
+        EX("Nordic Negatives","3x5","hamstrings"),
+        EX("Spanish Squats (wall)","3x30s","knee tendons"),
+        EX("Bulgarian Split Squats","2x8 each leg","knee stability"),
+        EX("Tib Raises","3x20","ankles"),
+        EX("Single-Leg Calf Raises","3x15 each"),
+        EX("Ankle Circles","2x20 each direction"),
+      ];
+      return [
+        { title: "🏋️ Arms Finisher (45–55 min)", detail: finisher[w] },
+        { title: "💪 Back Pump — NEW (12–15 min)", detail: backpump },
+        { title: "🦵 Leg Health — Session 1 (15 min, never cut)", detail: leg1 },
+      ];
+    }
+  },
+
+  // ============ SATURDAY ============
+  {
+    day: "SATURDAY", type: "track",
+    tags: ["🏃 Track + Plyos", "🦵 Leg Health #2", "⚽ Light Footwork"],
+    note: ["Highest-impact day of the week — leg health here protects against the Fri game → Sat track combo"],
+    sessions: (w) => {
+      const warmup = [
+        EX("Light cardio", "5 min"),
+        EX("Hip/ankle mobility", "—"),
+        EX("Bodyweight squats", "2x15"),
+        EX("Glute bridges", "2x15"),
+      ];
+      const mech = w === 2
+        ? [EX("A-Skips","2x20m"), EX("B-Skips","2x20m"), EX("Ankling","2x20m")]
+        : [EX("A-Skips","2x20m"), EX("B-Skips","2x20m"), EX("Ankling","2x20m")];
+      const speed = w === 2 ? null : [
+        EX("Flying 20s", "4 reps"),
+        EX("10m Accelerations", "3 reps"),
+        EX("20m Sprints", "3 reps"),
+        EX("30m Sprints", "3 reps"),
+      ];
+      const plyo = w === 2 ? null : [
+        EX("Box Jumps", "4x5"),
+        EX("Broad Jumps", "3x5"),
+        EX("Pogo Jumps", "3x20"),
+        EX("Single-Leg Hops", "3x8 each"),
+        EX("Drop Jumps", "3x5"),
+      ];
+      const leg2 = [
+        EX("Split Squat Isometric Holds", "3x30s", "knees"),
+        EX("Spanish Squats", "3x30s"),
+        EX("Nordic Negatives", "3x5", "hamstrings"),
+        EX("Tib Raises", "3x20", "ankles"),
+        EX("Single-Leg Balance", "2x45s each", "targets your loose-ankle tendency directly"),
+      ];
+      const footwork = [
+        EX("Ball mastery / close control touches", "10 min"),
+        EX("Light cone/marker footwork", "10 min"),
+        EX("Low intensity", "—", "no sprinting or directional cuts — rhythm work only"),
+      ];
+      const sessions = [
+        { title: "🏃 Warm-Up (10 min)", detail: warmup },
+        { title: "🏃 Sprint Mechanics (10 min)", detail: mech },
+      ];
+      if (speed) sessions.push({ title: "⚡ Speed Work (20 min)", detail: speed });
+      else sessions.push({ title: "⚡ Speed Work — SKIPPED this week", detail: [EX("Deload week","—","sprint mechanics only, no max-effort speed")] });
+      if (plyo) sessions.push({ title: "🦘 Plyometrics (20 min)", detail: plyo });
+      else sessions.push({ title: "🦘 Plyometrics — SKIPPED this week", detail: [EX("Deload week","—","no jump impact, ankles/knees get a real break")] });
+      sessions.push({ title: "🦵 Leg Health — Session 2 (15 min, never cut)", detail: leg2 });
+      sessions.push({ title: "⚽ Light Footwork — 20 min (new, every week)", detail: footwork });
+      return sessions;
+    }
+  },
+
+  // ============ SUNDAY ============
+  {
+    day: "SUNDAY", type: "recovery",
+    tags: ["⚽ Soccer Analysis", "🏈 Flag Game", "🏀 Basketball (biweekly)"],
+    note: ["Analysis feeds Monday's session — watch, pick one thing, apply it tomorrow"],
+    sessions: (w) => {
+      const sessions = [
+        {
+          title: "⚽ Soccer Analysis — YouTube (30–45 min)",
+          detail: [
+            EX("Watch 2–3 breakdowns", "—", "specific skill or tactical concept"),
+            EX("Pick ONE thing", "—", "to consciously apply in Monday's session"),
+            EX("Note it down", "—", "keep it fresh going into Monday"),
+          ]
+        },
+        {
+          title: "🏈 Flag Intramurals Game",
+          detail: [ EX("Fixed commitment", "—", "your team's scheduled game") ]
+        },
+      ];
+      if (w === 1 || w === 3) {
+        sessions.push({
+          title: "🏀 Basketball — casual (this week)",
+          detail: [ EX("Drop-in or pickup", "—", "whatever's available — not a skill priority right now") ]
+        });
+      } else {
+        sessions.push({
+          title: "🏀 Basketball — off this week",
+          detail: [ EX("Biweekly only", "—", "next one is next cycle") ]
+        });
+      }
+      return sessions;
+    }
+  },
+];
+
+const typeConfig = {
+  "soccer":       { color: "#10b981", label: "SOCCER",   bg: "#ecfdf5" },
+  "gym-back":     { color: "#ef4444", label: "BACK",     bg: "#fef2f2" },
+  "gym-shoulders":{ color: "#f59e0b", label: "SHOULDERS",bg: "#fffbeb" },
+  "gym-arms":     { color: "#ef4444", label: "ARMS",     bg: "#fef2f2" },
+  "gym-finisher": { color: "#f59e0b", label: "FINISHER", bg: "#fffbeb" },
+  "track":        { color: "#f97316", label: "TRACK",    bg: "#fff7ed" },
+  "recovery":     { color: "#3b82f6", label: "RECOVERY", bg: "#eff6ff" },
+};
+
+let activeWeek = 0;
+let openDay = null;
+let openSess = {};
+
+function renderWeekTabs() {
+  const el = document.getElementById("weektabs");
+  el.innerHTML = weeks.map((w, i) => `
+    <div class="weektab ${i === activeWeek ? 'active' : ''}" onclick="setWeek(${i})">
+      <div class="wl">${w.label}</div>
+      <div class="ws">${w.sub}</div>
+    </div>
+  `).join("");
+  document.getElementById("weeknote").textContent = weeks[activeWeek].note;
+}
+
+function renderDays() {
+  const el = document.getElementById("days");
+  el.innerHTML = schedule.map((d, di) => {
+    const tc = typeConfig[d.type];
+    const isOpen = openDay === di;
+    const note = Array.isArray(d.note) ? d.note[activeWeek] : d.note;
+    const sessions = d.sessions(activeWeek);
+    return `
+      <div class="day">
+        <button class="daybtn ${isOpen ? 'open' : ''}" onclick="toggleDay(${di})" style="${isOpen ? `background:${tc.bg};border-color:${tc.color}88;` : ''}">
+          <div class="daymain">
+            <div class="daytop">
+              <span class="dayname" style="${isOpen ? `color:${tc.color}` : ''}">${d.day}</span>
+              <span class="daybadge" style="background:${tc.color}18;color:${tc.color}">${tc.label}</span>
+            </div>
+            <div class="daynote">${note}</div>
+          </div>
+          <span class="daychev">${isOpen ? '▲' : '▼'}</span>
+        </button>
+        ${isOpen ? `
+          <div class="daybody" style="border-color:${tc.color}55;">
+            ${sessions.map((s, si) => {
+              const k = di + '-' + si;
+              const sOpen = openSess[k];
+              return `
+                <div class="sess">
+                  <button class="sessbtn ${sOpen ? 'open' : ''}" onclick="toggleSess('${k}')" style="${sOpen ? `background:${tc.bg};border-color:${tc.color}66;` : ''}">
+                    <span class="sesstitle" style="${sOpen ? `color:${tc.color}` : ''}">${s.title}</span>
+                    <span class="sesschev">${sOpen ? '▲' : '▼'}</span>
+                  </button>
+                  ${sOpen ? `
+                    <div class="sessbody" style="border-color:${tc.color}44;">
+                      ${s.detail.map(e => `
+                        <div class="exrow">
+                          <span class="exname">${e.name}</span>
+                          <span class="exset">${e.set}</span>
+                        </div>
+                        ${e.note ? `<div class="exnote">${e.note}</div>` : ''}
+                      `).join("")}
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join("");
+}
+
+function setWeek(i) { activeWeek = i; openDay = null; openSess = {}; renderWeekTabs(); renderDays(); }
+function toggleDay(di) { openDay = openDay === di ? null : di; openSess = {}; renderDays(); }
+function toggleSess(k) { openSess[k] = !openSess[k]; renderDays(); }
+
+renderWeekTabs();
+renderDays();
+</script>
+</body>
+</html>
