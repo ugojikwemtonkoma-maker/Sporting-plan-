@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +50,12 @@
     margin: 10px 0; padding: 9px 14px; background: var(--accent-light);
     border-left: 3px solid #3b82f6; border-radius: 0 8px 8px 0;
     font-size: 11px; color: #1d4ed8; font-weight: 600;
+  }
+
+  .skatenote {
+    margin: 0 0 10px; padding: 9px 14px; background: #fdf4ff;
+    border-left: 3px solid #c026d3; border-radius: 0 8px 8px 0;
+    font-size: 11px; color: #a21caf; font-weight: 600;
   }
 
   .day { margin-bottom: 8px; }
@@ -104,15 +111,16 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="eyebrow">4-Week Rotation · Physical Training</div>
+    <div class="eyebrow">4-Week Rotation · Physical Training · v2</div>
     <h1>⚡ FALL 2026 BODY SYSTEM</h1>
-    <div class="tagline">Back · Shoulders · Arms · Ankles/Knees · Soccer · Track</div>
+    <div class="tagline">Back · Shoulders · Arms · Ankles/Knees · Soccer · Track · Hybrid Calisthenics</div>
     <div class="tags">
       <span class="tag">🏋️ Tue·Wed·Thu·Fri</span>
+      <span class="tag">🤸 Calisthenics Tue·Wed·Thu</span>
       <span class="tag">🦵 Leg Health: Fri+Sat</span>
       <span class="tag">⚽ Mon+Fri+Sat</span>
-      <span class="tag">🏃 Sat</span>
-      <span class="tag">🧘 Mobility Mon</span>
+      <span class="tag">🏃 Track Sat</span>
+      <span class="tag">💃 Dancing Thu</span>
     </div>
   </div>
 </div>
@@ -121,11 +129,13 @@
 
   <div class="weektabs" id="weektabs"></div>
   <div class="weeknote" id="weeknote"></div>
+  <div class="skatenote">🛹 Skateboarding — anytime you've done all you can, preferably Sunday</div>
   <div id="days"></div>
 
   <div class="footer">
     <strong>Back 2x · Shoulders 2x · Arms 2x weekly — growth optimised</strong><br>
-    🦵 Leg health never skipped, even in deload &nbsp;|&nbsp; 🧘 Ankle/knee work protects your soccer career<br>
+    🤸 Calisthenics finishers keep the hybrid-athlete side alive without overloading a bulk phase<br>
+    🦵 Leg health never skipped, even in deload &nbsp;|&nbsp; 💃 Dancing every Thursday<br>
     <span style="color:#3b82f6;">Repeat this 4-week cycle all semester 🔁</span>
   </div>
 
@@ -137,7 +147,7 @@ const EX = (name, set, note) => ({ name, set, note: note || null });
 const weeks = [
   { label: "WEEK 1", sub: "Foundation", note: "Baseline intensity — every exercise learned clean before adding load" },
   { label: "WEEK 2", sub: "Build", note: "Intensity bump — add load/volume where noted" },
-  { label: "WEEK 3", sub: "Deload", note: "Sets cut ~30% across gym + track. Leg health & mobility stay full — these protect your ankles/knees, never cut" },
+  { label: "WEEK 3", sub: "Deload", note: "Sets cut ~30% across gym, track + calisthenics. Leg health & mobility stay full — these protect your ankles/knees, never cut" },
   { label: "WEEK 4", sub: "Refinement", note: "Back to normal intensity, slight exercise variation to avoid staleness" },
 ];
 
@@ -146,14 +156,22 @@ const schedule = [
   // ============ MONDAY ============
   {
     day: "MONDAY", type: "soccer",
-    tags: ["🧘 Mobility", "⚽ Personal Soccer #1"],
+    tags: ["🏃 Morning Run", "🧘 Mobility", "⚽ Personal Soccer #1 (optional)"],
     note: [
-      "Light day — mobility + technical soccer, apply Sunday's analysis here",
+      "Light day — run + mobility + technical soccer (soccer is optional, trial week to week)",
       "Same as W1, faster tempo on moves",
-      "Deload: shortened 45–60 min, technical only, no speed emphasis",
-      "Full session, rotate in finishing practice if space allows",
+      "Deload: run shortened, soccer shortened to 45–60 min if you do it",
+      "Full session again, rotate in finishing practice if space allows",
     ],
     sessions: (w) => [
+      {
+        title: "🏃 Morning Run (20–25 min, easy pace)",
+        detail: w === 2 ? [
+          EX("Easy pace run", "20 min", "slightly shorter, deload week"),
+        ] : [
+          EX("Easy pace run", "20–25 min"),
+        ]
+      },
       {
         title: "🧘 Mobility / Stretch (20–30 min)",
         detail: [
@@ -166,7 +184,7 @@ const schedule = [
         ]
       },
       {
-        title: "⚽ Personal Soccer #1 — Technical",
+        title: "⚽ Personal Soccer #1 — Technical (OPTIONAL)",
         detail: w === 2 ? [
           EX("Ball mastery + touches", "20 min", "shortened deload session"),
           EX("Skill moves — perfect what you know", "15 min"),
@@ -185,11 +203,11 @@ const schedule = [
   // ============ TUESDAY ============
   {
     day: "TUESDAY", type: "gym-back",
-    tags: ["🏋️ Gym — Back Width & Thickness", "🧘 Abs"],
-    note: ["Back growth day — this is your #1 stated goal, hit directly here"],
+    tags: ["🏋️ Gym — Back Width & Thickness", "🤸 Calisthenics", "🧘 Abs"],
+    note: ["Back growth day — your #1 stated goal, hit directly here + reinforced with bodyweight control work"],
     sessions: (w) => {
       const rows = [
-        [ // W1
+        [
           EX("Wide-Grip Pull-Ups", "4 sets to failure", "width — lats"),
           EX("Barbell Rows (overhand)", "4x8", "2s pause at chest — thickness"),
           EX("Lat Pulldowns (wide grip)", "4x10", "squeeze at bottom"),
@@ -197,7 +215,7 @@ const schedule = [
           EX("Face Pulls", "3x15", "posture + rear delts"),
           EX("Rear Delt Flys", "3x15", "posture"),
         ],
-        [ // W2
+        [
           EX("Weighted Pull-Ups", "4 sets", "add load"),
           EX("Pendlay Rows", "4x6–8", "explosive — thickness"),
           EX("Lat Pulldowns (wide)", "4x10", "drive elbows to hips"),
@@ -205,7 +223,7 @@ const schedule = [
           EX("Face Pulls", "3x15"),
           EX("Rear Delt Flys", "3x15"),
         ],
-        [ // W3 deload
+        [
           EX("Wide-Grip Pull-Ups", "3 sets to failure"),
           EX("Barbell Rows", "3x8"),
           EX("Lat Pulldowns (wide)", "3x10"),
@@ -213,7 +231,7 @@ const schedule = [
           EX("Face Pulls", "2x15"),
           EX("Rear Delt Flys", "2x15"),
         ],
-        [ // W4
+        [
           EX("Pull-Ups (neutral grip)", "4 sets", "variation"),
           EX("Chest-Supported DB Row", "4x10"),
           EX("Lat Pulldowns (wide)", "4x10", "slow eccentric"),
@@ -222,6 +240,9 @@ const schedule = [
           EX("Rear Delt Flys", "3x15"),
         ],
       ];
+      const cali = w === 2
+        ? [EX("Scapular Pull-Ups","2x8"),EX("Bodyweight Australian Rows","2x10")]
+        : [EX("Scapular Pull-Ups","2x10","control + back activation"),EX("Bodyweight Australian Rows","3x12","hybrid strength")];
       const abs = [
         [EX("Hollow Hold","3x30s"),EX("Hanging Leg Raises","3x10"),EX("Side Planks","2x30s each")],
         [EX("Hollow Hold","3x30s"),EX("Hanging Leg Raises","3x10"),EX("Side Planks","2x35s each")],
@@ -230,6 +251,7 @@ const schedule = [
       ];
       return [
         { title: "🏋️ Back — Width & Thickness (60–70 min)", detail: rows[w] },
+        { title: "🤸 Calisthenics Finisher (6–10 min)", detail: cali },
         { title: "🧘 Abs (10 min)", detail: abs[w] },
       ];
     }
@@ -238,8 +260,13 @@ const schedule = [
   // ============ WEDNESDAY ============
   {
     day: "WEDNESDAY", type: "gym-shoulders",
-    tags: ["🏋️ Gym — Shoulders & Chest"],
-    note: ["Shoulder width day — lateral raises are the priority movement here"],
+    tags: ["🏋️ Gym — Shoulders & Chest", "🤸 Calisthenics"],
+    note: [
+      "Shoulder width day — lateral raises are the priority movement here, calisthenics adds shoulder stability",
+      "Same, heavier load",
+      "🚫 RESET DAY — light gym only, no calisthenics finisher this week",
+      "Normal intensity, slight tempo variation",
+    ],
     sessions: (w) => {
       const rows = [
         [
@@ -275,15 +302,24 @@ const schedule = [
           EX("Dips", "3x12"),
         ],
       ];
-      return [{ title: "🏋️ Shoulders & Chest (55–65 min)", detail: rows[w] }];
+      const sessions = [{ title: "🏋️ Shoulders & Chest (55–65 min)", detail: rows[w] }];
+      if (w === 2) {
+        sessions.push({ title: "🚫 Calisthenics Finisher — SKIPPED (Reset Day)", detail: [EX("Fully protected day","—","no extra work added on top of gym")] });
+      } else {
+        sessions.push({
+          title: "🤸 Calisthenics Finisher (8–10 min)",
+          detail: [EX("Pike Push-Ups","3x10","shoulder-dominant bodyweight"),EX("Wall Handstand Hold","2x20s","shoulder stability + hybrid skill")]
+        });
+      }
+      return sessions;
     }
   },
 
   // ============ THURSDAY ============
   {
     day: "THURSDAY", type: "gym-arms",
-    tags: ["🏋️ Gym — Arms (Triceps Priority)", "🧘 Abs"],
-    note: ["Triceps get the heaviest movement of the week here — your stated priority"],
+    tags: ["🏋️ Gym — Arms (Triceps Priority)", "🤸 Calisthenics", "🧘 Abs", "💃 Dancing"],
+    note: ["Triceps get the heaviest movement of the week here, calisthenics reinforces arms/back overlap, dancing closes the day out"],
     sessions: (w) => {
       const rows = [
         [
@@ -315,15 +351,23 @@ const schedule = [
           EX("Hammer Curls", "3x12"),
         ],
       ];
+      const cali = w === 2
+        ? [EX("Diamond Push-Ups","2x12"),EX("Chin-Up Negatives","2x5")]
+        : [EX("Diamond Push-Ups","3x12","triceps-dominant"),EX("Chin-Up Negatives","3x5","controlled eccentric, back/biceps overlap")];
       const abs = [
         [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x45s")],
         [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x50s")],
         [EX("Dead Bugs","2x12"),EX("Reverse Crunches","2x15"),EX("Plank","2x40s")],
         [EX("Dead Bugs","3x12"),EX("Reverse Crunches","3x15"),EX("Plank","2x45s")],
       ];
+      const dance = w === 2
+        ? [EX("Dancing (shortened)","15 min","deload week")]
+        : [EX("Dancing","20–30 min","practice, whatever style you're on")];
       return [
         { title: "🏋️ Arms — Triceps Priority (55–65 min)", detail: rows[w] },
+        { title: "🤸 Calisthenics Finisher (6–10 min)", detail: cali },
         { title: "🧘 Abs (10 min)", detail: abs[w] },
+        { title: "💃 Dancing", detail: dance },
       ];
     }
   },
@@ -332,7 +376,7 @@ const schedule = [
   {
     day: "FRIDAY", type: "gym-finisher",
     tags: ["🏋️ Arms Finisher + Back Pump", "🦵 Leg Health #1", "⚽ Game 7–11pm"],
-    note: ["Light day before your night game — back pump added for true 2x/week back frequency"],
+    note: ["Light day before your night game — deliberately no calisthenics added here, this is already your 2nd-heaviest day"],
     sessions: (w) => {
       const finisher = [
         [EX("EZ-Bar Curl","3x10","2s pause"),EX("Cross-Body Hammer Curl","3x12"),EX("Cable Pushdowns","3x15"),EX("Lateral Raises","3x15","shoulders 2nd hit")],
@@ -353,7 +397,7 @@ const schedule = [
       ];
       return [
         { title: "🏋️ Arms Finisher (45–55 min)", detail: finisher[w] },
-        { title: "💪 Back Pump — NEW (12–15 min)", detail: backpump },
+        { title: "💪 Back Pump (12–15 min)", detail: backpump },
         { title: "🦵 Leg Health — Session 1 (15 min, never cut)", detail: leg1 },
       ];
     }
@@ -371,9 +415,7 @@ const schedule = [
         EX("Bodyweight squats", "2x15"),
         EX("Glute bridges", "2x15"),
       ];
-      const mech = w === 2
-        ? [EX("A-Skips","2x20m"), EX("B-Skips","2x20m"), EX("Ankling","2x20m")]
-        : [EX("A-Skips","2x20m"), EX("B-Skips","2x20m"), EX("Ankling","2x20m")];
+      const mech = [EX("A-Skips","2x20m"), EX("B-Skips","2x20m"), EX("Ankling","2x20m")];
       const speed = w === 2 ? null : [
         EX("Flying 20s", "4 reps"),
         EX("10m Accelerations", "3 reps"),
@@ -408,7 +450,7 @@ const schedule = [
       if (plyo) sessions.push({ title: "🦘 Plyometrics (20 min)", detail: plyo });
       else sessions.push({ title: "🦘 Plyometrics — SKIPPED this week", detail: [EX("Deload week","—","no jump impact, ankles/knees get a real break")] });
       sessions.push({ title: "🦵 Leg Health — Session 2 (15 min, never cut)", detail: leg2 });
-      sessions.push({ title: "⚽ Light Footwork — 20 min (new, every week)", detail: footwork });
+      sessions.push({ title: "⚽ Light Footwork (20 min)", detail: footwork });
       return sessions;
     }
   },
@@ -416,9 +458,15 @@ const schedule = [
   // ============ SUNDAY ============
   {
     day: "SUNDAY", type: "recovery",
-    tags: ["⚽ Soccer Analysis", "🏈 Flag Game", "🏀 Basketball (biweekly)"],
-    note: ["Analysis feeds Monday's session — watch, pick one thing, apply it tomorrow"],
+    tags: ["⚽ Soccer Analysis", "📸 Modeling", "🏈 Flag Game", "🏀 Basketball (biweekly)", "🛹 Skateboarding"],
+    note: ["Analysis feeds Monday's session — watch, pick one thing, apply it tomorrow. Skateboard anytime you've done all you can today."],
     sessions: (w) => {
+      const modeling = [
+        { title: "📸 Modeling — Posing Practice (15–20 min)", detail: [EX("Mirror/phone camera work","—","angles, walking, hand placement")] },
+        { title: "📸 Modeling — Portfolio Update (15–20 min)", detail: [EX("New phone photos","—","good natural light, different angles")] },
+        { title: "📸 Modeling — Light Touch (10 min, deload)", detail: [EX("Skim portfolio","—","no new shoot needed this week")] },
+        { title: "📸 Modeling — Agency Research/Submissions (15–20 min)", detail: [EX("Shortlist agencies","—","note submission requirements, or submit if you're at that stage")] },
+      ];
       const sessions = [
         {
           title: "⚽ Soccer Analysis — YouTube (30–45 min)",
@@ -428,6 +476,7 @@ const schedule = [
             EX("Note it down", "—", "keep it fresh going into Monday"),
           ]
         },
+        modeling[w],
         {
           title: "🏈 Flag Intramurals Game",
           detail: [ EX("Fixed commitment", "—", "your team's scheduled game") ]
@@ -444,6 +493,10 @@ const schedule = [
           detail: [ EX("Biweekly only", "—", "next one is next cycle") ]
         });
       }
+      sessions.push({
+        title: "🛹 Skateboarding — anytime",
+        detail: [ EX("No fixed time", "—", "whenever you've done all you can today") ]
+      });
       return sessions;
     }
   },
